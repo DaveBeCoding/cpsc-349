@@ -11,42 +11,47 @@
 
     this.$element = $(selector);
     if (this.$element.length === 0) {
-      throw new Error ('Could not find element with selector' + selector);
+      throw new Error('Could not find element with selector' + selector);
     }
   }
 
   CheckList.prototype.addClickHandler = function (fn) {
-    this.$element.on('click', 'input', function(event) {
-      var email = event.target.value;
-      this.removeRow(email);
-      fn(email);
-    }.bind(this));
+    this.$element.on(
+      'click',
+      'input',
+      function (event) {
+        var email = event.target.value;
+        this.removeRow(email);
+        fn(email);
+      }.bind(this)
+    );
   };
 
-  CheckList.prototype.addRow = function(coffeeOrder) {
+  CheckList.prototype.addRow = function (coffeeOrder) {
     this.removeRow(coffeeOrder.emailAddress);
     var rowElement = new Row(coffeeOrder);
 
     this.$element.append(rowElement.$element);
   };
 
-  CheckList.prototype.removeRow = function(email) {
-    this.$element.find('[value = "' + email + '"]')
-    .closest('[data-coffee-order="checkbox"]')
-    .remove();
+  CheckList.prototype.removeRow = function (email) {
+    this.$element
+      .find('[value = "' + email + '"]')
+      .closest('[data-coffee-order="checkbox"]')
+      .remove();
   };
 
   function Row(coffeeOrder) {
     var $div = $('<div></div>', {
       'data-coffee-order': 'checkbox',
-      'class': 'checkbox'
+      class: 'checkbox',
     });
 
     var $label = $('<label></label>');
 
     var $checkbox = $('<input></input>', {
       type: 'checkbox',
-      value: coffeeOrder.emailAddress
+      value: coffeeOrder.emailAddress,
     });
 
     var description = coffeeOrder.size + ' ';
@@ -67,5 +72,14 @@
 
   App.CheckList = CheckList;
   window.App = App;
-
 })(window);
+
+// addClickHandler(fn) {
+// this.$element.on(‘click’, ‘input’, function (event) {
+// var email = event.target.value;
+// fn(email)
+// .then(function() {
+// this.removeRow(email);
+// }.bind(this));
+// }.bind(this));
+// };
